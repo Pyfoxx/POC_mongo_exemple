@@ -2,7 +2,7 @@
 import clientPromise from "../../lib/mongodb";
 
 const DB_NAME = "sample_mflix";
-const COLLECTION_NAME = "movies";
+const COLLECTION_NAME = "comments";
 const LIMIT = 10;
 
 const ERROR_RESPONSE = {
@@ -33,7 +33,6 @@ const SUCCESS_RESPONSE = {
  *         description: Hello Movies
  *       400:
  *          description: no movie data was given to the api
-
  */
 export default async function handler(req, res) {
     const client = await clientPromise;

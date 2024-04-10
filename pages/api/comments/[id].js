@@ -2,7 +2,7 @@ import clientPromise from "../../../lib/mongodb";
 import { ObjectId } from "mongodb";
 
 const DB_NAME = "sample_mflix";
-const COLLECTION_NAME = "movies";
+const COLLECTION_NAME = "comments";
 const LIMIT = 10;
 
 const ERROR_RESPONSE = {
@@ -41,6 +41,7 @@ const SUCCESS_RESPONSE = {
  *       400:
  *          description: no movie data was given to the api
  **/
+
 export default async function handler(req, res) {
   const idMovie = req.query.id
   const client = await clientPromise;
@@ -63,7 +64,7 @@ export default async function handler(req, res) {
 }
 
 async function getMovie(db, idMovie, res) {
-    const dbMovie = await db.collection("movies").findOne({ _id : new ObjectId(idMovie) });
+    const dbMovie = await db.collection(COLLECTION_NAME).findOne({ _id : new ObjectId(idMovie) });
   res.json({ status: 200, data: {movie: dbMovie} });
   //   responseBasedOnAcknowledgement(res, dbMovie);
 }
