@@ -7,6 +7,13 @@ const LIMIT = 10;
 
 const ERROR_RESPONSE = {
     status: 500,
+    /**
+     * Function to perform movie data operation.
+     *
+     * @param {string} movieTitle - The title of the movie.
+     * @returns {void}
+     * @throws {Error} When movie data operation fails.
+     */
     error: 'Movie data operation failed'
 };
 
