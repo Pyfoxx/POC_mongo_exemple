@@ -62,11 +62,27 @@ export default async function handler(req, res) {
     }
 }
 
+/**
+ * Retrieves a list of movies from the database and sends the response with the movies' data.
+ *
+ * @param {Object} db - The database instance.
+ * @param {Object} res - The response object.
+ * @return {Promise<void>} - A promise that resolves when the response is sent.
+ */
 async function getMovies(db, res) {
     const movies = await db.collection(COLLECTION_NAME).find({}).limit(LIMIT).toArray();
     res.json({...SUCCESS_RESPONSE, data: movies});
 }
 
+/**
+     * Inserts a movie data into the specified collection in the database.
+     *
+     * @async
+     * @function insertResult
+     * @param {Object} movieData - The movie data to be inserted as an object.
+     * @returns {Promise<Object>} - A promise that resolves to the result of the insert operation.
+     * @throws {Error} - If an error occurs while inserting the data.
+*/
 async function postMovie(db, idMovie, movieData, res) {
     const insertResult = await db.collection(COLLECTION_NAME).insertOne(movieData);
     console.log(insertResult)
@@ -74,6 +90,17 @@ async function postMovie(db, idMovie, movieData, res) {
 }
 
 
+/**
+ * Generates response based on acknowledgement of operation result.
+ * If operation result is acknowledged, success response with data will be sent.
+ * If operation result is not acknowledged, error response will be sent.
+ *
+ * @param {Object} res - The response object of the HTTP request.
+ * @param {Object} operationResult - The result of the operation to be acknowledged.
+ * @param {Object} successData - The data to be included in the success response.
+ *
+ * @return {Promise} - A promise that will be resolved with the response sent.
+ */
 async function responseBasedOnAcknowledgement(res, operationResult, successData) {
     if (operationResult.acknowledged !== true) {
         res.status(500).json(ERROR_RESPONSE);

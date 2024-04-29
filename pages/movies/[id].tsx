@@ -143,7 +143,14 @@ const HomePage = () => {
                                         IMDb Rating: {movie.imdb.rating} ({movie.imdb.votes} votes)
                                     </Typography>
                                     <Typography variant="body2">
-                                        Tomatometer: {movie.tomatoes.critic.meter}% (Critic), {movie.tomatoes.viewer.meter}% (Viewer)
+
+                                        <Typography variant="body2">
+                                            Tomatometer:
+                                            {movie.tomatoes.critic?.meter ?
+                                                `${movie.tomatoes.critic.meter}% (Critic)` : 'N/A (Critic)'}
+                                            , {movie.tomatoes.viewer?.meter ?
+                                                `${movie.tomatoes.viewer.meter}% (Viewer)` : 'N/A (Viewer)'}
+                                        </Typography>
                                     </Typography>
                                     <Typography variant="body2">
                                         Awards: {movie.awards.text} (Wins: {movie.awards.wins}, Nominations: {movie.awards.nominations})

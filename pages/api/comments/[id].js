@@ -63,22 +63,54 @@ export default async function handler(req, res) {
 
 }
 
+/**
+ * Retrieves a movie from the database.
+ *
+ * @param {Object} db - The database object.
+ * @param {string} idMovie - The ID of the movie to retrieve.
+ * @param {Object} res - The response object.
+ * @return {Promise<void>} - A promise that resolves without any value.
+ */
 async function getMovie(db, idMovie, res) {
     const dbMovie = await db.collection(COLLECTION_NAME).findOne({ _id : new ObjectId(idMovie) });
   res.json({ status: 200, data: {movie: dbMovie} });
   //   responseBasedOnAcknowledgement(res, dbMovie);
 }
 
+/**
+ * Updates a movie in the database.
+ *
+ * @param {Object} db - The database object.
+ * @param {string} idMovie - The ID of the movie to update.
+ * @param {Object} movieData - The updated movie data.
+ * @param {Object} res - The response object.
+ * @returns {undefined}
+ */
 async function putMovie(db, idMovie, movieData, res) {
     const putResult = await db.collection(COLLECTION_NAME).updateOne({ _id : new ObjectId(idMovie) }, {$set: movieData });
     responseBasedOnAcknowledgement(res, putResult);
 }
 
+/**
+ * Deletes a movie from the specified MongoDB collection.
+ *
+ * @param {MongoClient} db - The MongoDB client to use for database operations.
+ * @param {string} idMovie - The ID of the movie to delete.
+ * @param {object} res - The response object to send the result to.
+ * @return {Promise<void>} - A promise that resolves when the movie is successfully deleted.
+ */
 async function deleteMovie(db, idMovie, res) {
     const deleteResult = await db.collection(COLLECTION_NAME).deleteOne({ _id : new ObjectId(idMovie) });
     responseBasedOnAcknowledgement(res, deleteResult);
 }
 
+/**
+ * Generates the response based on the acknowledgement result.
+ * @param {object} res - The response object.
+ * @param {object} operationResult - The result of the operation.
+ * @param {object} successData - The success data to be included in the response.
+ * @return {Promise} - A Promise that resolves with the response.
+ */
 async function responseBasedOnAcknowledgement(res, operationResult, successData) {
     if (operationResult.acknowledged !== true) {
         res.status(500).json(ERROR_RESPONSE);

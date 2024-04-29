@@ -54,11 +54,30 @@ export default async function handler(req, res) {
     }
 }
 
+/**
+ * Retrieves a list of movies from the database and sends a JSON response.
+ *
+ * @param {Object} db - The database object.
+ * @param {Object} res - The response object.
+ * @return {void}
+ *
+ * @example
+ * getMovies(db, res);
+ */
 async function getMovies(db, res) {
     const movies = await db.collection(COLLECTION_NAME).find({}).limit(LIMIT).toArray();
     res.json({...SUCCESS_RESPONSE, data: movies});
 }
 
+/**
+ * Save movie data to the database.
+ *
+ * @param {Object} db - The database connection object.
+ * @param {number} idMovie - The ID of the movie.
+ * @param {Object} movieData - The movie data to be inserted.
+ * @param {Object} res - The response object.
+ * @return {void} - It does not return anything.
+ */
 async function postMovie(db, idMovie, movieData, res) {
     const insertResult = await db.collection(COLLECTION_NAME).insertOne(movieData);
     console.log(insertResult)

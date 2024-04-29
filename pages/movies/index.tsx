@@ -49,12 +49,35 @@ type MovieModel = {
 
 // Insert this at line 49
 
+
+
 const HomePage = () => {
     useEffect(() => {
     document.title = 'GG EZ noraj';
   }, []);
 
+
     const [moviesList, setMoviesList] = useState<MovieModel[]>([]);
+    const handleDelete = async (movieId: string) => {
+        try {
+            const response = await fetch(`/api/movies/${movieId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Include other headers as necessary
+                },
+            });
+
+            if (response.ok) {
+                setMoviesList(moviesList.filter(movie => movie._id !== movieId));
+                console.log("Delete successful");
+            } else {
+                console.error('Delete failed:', response.status);
+            }
+        } catch (error) {
+            console.error('Error making the DELETE request:', error);
+        }
+    };
 
     useEffect(() => {
         fetch('/api/movies')
@@ -84,8 +107,8 @@ const HomePage = () => {
                                 </CardContent>
                             </CardActionArea>
                             <CardActions>
-                                <Button size="small" color="primary">
-                                    Share
+                                <Button size="small" color="primary" onClick={() => handleDelete(movie._id)}>
+                                    Delete
                                 </Button>
                             </CardActions>
                         </Card>
