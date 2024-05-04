@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import MovieModel from "../../models/movie";
+import CommentModel from "../../models/comments";
+import TopBar from "../../../test/src/components/TopBar";
 import { useRouter } from 'next/router';
 import {
   Button,
@@ -23,55 +26,13 @@ const HoverImage = styled(Paper)(({ theme }) => ({
   }
 }));
 
-type MovieModel = {
-    _id: string;
-    plot: string;
-    genres: Array<string>;
-    runtime: number;
-    cast: Array<string>;
-    poster: string;
-    title: string;
-    fullplot: string;
-    languages: Array<string>;
-    released: string;
-    directors: Array<string>;
-    rated: string;
-    awards: {
-        wins: number;
-        nominations: number;
-        text: string;
-    };
-    lastupdated: string;
-    year: number;
-    imdb: {
-        rating: number;
-        votes: number;
-        id: number;
-    };
-    countries: Array<string>;
-    type: string;
-    tomatoes: {
-        viewer: {
-            rating: number;
-            numReviews: number;
-            meter: number;
-        },
-        fresh: number;
-        critic: {
-            rating: number;
-            numReviews: number;
-            meter: number;
-        },
-        rotten: number;
-        lastUpdated: string;
-    };
-    num_mflix_comments: number;
-};
+
 
 const HomePage = () => {
     const router = useRouter();
     const { id } = router.query;
     const [movie, setMovie] = useState<MovieModel | null>(null);
+    const [comments, setComments] = useState<CommentModel | null>(null);
     const [style, setStyle] = useState({});
     const [transformOrigin, setTransformOrigin] = useState('center center');
 
@@ -92,6 +53,13 @@ const HomePage = () => {
             fetch(`/api/movies/${id}`)
                 .then(response => response.json())
                 .then(data => setMovie(data.data.movie));
+        }
+    }, [id]);
+    useEffect(() => {
+        if (id) {
+            fetch(`/api/comments/${id}`)
+                .then(response => response.json())
+                .then(data => setComments(data.data))
         }
     }, [id]);
 
@@ -128,7 +96,8 @@ const HomePage = () => {
                                         Genres: {movie.genres.join(', ')}
                                     </Typography>
                                     <Typography variant="body2">
-                                        Languages: {movie.languages.join(', ')}
+                                        Languages: {movie.languages?
+                                                `${movie.languages.join(', ')}% (languages)` : 'N/A (languages)'}
                                     </Typography>
                                     <Typography variant="body2">
                                         Released: {movie.released}
@@ -158,6 +127,19 @@ const HomePage = () => {
                                 </Box>
                             </CardContent>
                         </Card>
+                        {comments?(
+                            <Card>
+                                <CardContent>
+                                    <Typography variant="body2">
+                                        {comments.name}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        ):(
+                            <Grid item xs={12}>
+                                <Typography variant="h5">Loading...</Typography>
+                            </Grid>
+                        )}
                     </Grid>
                 </Grid>
             ) : (

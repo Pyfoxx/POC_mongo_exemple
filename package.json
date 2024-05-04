@@ -6,6 +6,9 @@
     "start": "next start"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/material": "^5.15.15",
     "btoa": "^1.2.1",
     "formdata-node": "^6.0.3",
     "mongodb": "^6.5.0",
@@ -13,14 +16,13 @@
     "next-swagger-doc": "^0.1.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "swagger-ui-react": "^3.52.3",
-    "@mui/material": "^5.15.15",
-    "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.5"
+    "swagger-ui-react": "^3.52.3"
   },
   "devDependencies": {
     "@types/node": "18.7.5",
     "@types/react": "^18.2.77",
+    "@types/react-dom": "^18.3.0",
+    "react-router-dom": "^6.23.0",
     "typescript": "4.6.3"
   }
 }
